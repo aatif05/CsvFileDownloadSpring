@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -17,11 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RptFileDownload {
 	public static final MediaType MEDIA_TYPE = new MediaType("text", "csv", Charset.forName("utf-8"));
+	@Value("${filepath}")
+	String fileName;
 
 	@GetMapping(path = "/downloadRpt")
 	public ResponseEntity<Resource> download(String param) throws IOException {
-
-		File file = new File("C:\\Users\\aatif\\Downloads\\Testing.csv");
+		
+		File file = new File(fileName);
 
 		Path path = Paths.get(file.getAbsolutePath());
 		ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
